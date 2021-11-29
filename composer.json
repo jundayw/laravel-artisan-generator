@@ -1,0 +1,27 @@
+{
+    "name": "jundayw/laravel-artisan-generator",
+    "description": "laravel artisan generator",
+    "require": {
+        "php": ">=7.2.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jundayw",
+            "email": "jundayw@126.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Jundayw\\LaravelArtisanGenerator\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Jundayw\\LaravelArtisanGenerator\\GeneratorServiceProvider"
+            ]
+        }
+    }
+}
