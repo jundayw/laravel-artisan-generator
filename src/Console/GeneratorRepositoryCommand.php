@@ -37,18 +37,18 @@ class GeneratorRepositoryCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        $stub = view('artisan-generator::repository')->getPath();
+        $stub = view('artisan-generator-stubs::repository')->getPath();
 
         if ($this->option('parent')) {
-            $stub = view('artisan-generator::repository-nested')->getPath();
+            $stub = view('artisan-generator-stubs::repository-nested')->getPath();
         }
 
         if ($this->option('model')) {
-            $stub = view('artisan-generator::repository-model')->getPath();
+            $stub = view('artisan-generator-stubs::repository-model')->getPath();
         }
 
         if ($this->option('model') && $this->option('method')) {
-            $stub = view('artisan-generator::repository-model-method')->getPath();
+            $stub = view('artisan-generator-stubs::repository-model-method')->getPath();
         }
 
         return $stub;

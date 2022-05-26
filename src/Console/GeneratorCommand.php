@@ -27,6 +27,8 @@ class GeneratorCommand extends Command
      */
     protected $type = 'Generator';
 
+    protected $parameters = [];
+
     /**
      * Execute the console command.
      *
@@ -34,54 +36,105 @@ class GeneratorCommand extends Command
      */
     public function handle()
     {
-        $arguments = [];
+        $this->buildController()
+            ->buildControllerMethodAndView()
+            ->buildControllerRequest()
+            ->buildRepository()
+            ->buildModel();
 
-        $controller = function () use (&$controller) {
-            if ($controllerName = $this->ask('The name of the controller')) {
-                return $controllerName;
-            }
-            return $controller();
-        };
+        $this->call('generator:controller', $this->parameters);
+    }
 
-        $arguments['name'] = $controller();
-
-        $label = function () use (&$label) {
-            if ($labelName = $this->ask('The label for the given controller')) {
+    protected function buildController()
+    {
+        $label = function($default = null) use (&$label) {
+            if ($labelName = $this->ask('The label for the given controller', $default)) {
                 return $labelName;
             }
-            return $label();
+            return $label($default);
         };
 
-        $arguments['--label'] = $label();
+        $this->parameters['--label'] = $label('Role');
 
+        $controller = function($default = null) use (&$controller) {
+            if ($controllerName = $this->ask('The name of the controller', $default)) {
+                return $controllerName;
+            }
+            return $controller($default);
+        };
+
+        $this->parameters['name'] = $controller('Backend/RoleController');
+
+        return $this;
+    }
+
+    protected function buildControllerMethodAndView()
+    {
         if ($this->confirm("Do you want to generate methods for given controller", true)) {
-            $arguments['--method'] = true;
+
+            $this->parameters['--method'] = true;
+
+            $view = function($default = null) use (&$view) {
+                if ($viewName = $this->ask('The name of the views for the given controller', $default)) {
+                    return explode(',', $viewName);
+                }
+                return $view($default);
+            };
+
+            $this->parameters['--view'] = $view('create,edit,list');
         }
 
+        return $this;
+    }
+
+    protected function buildControllerRequest()
+    {
+        if ($this->confirm("Do you want to generate requests for given controller", true)) {
+
+            $request = function($default = null) use (&$request) {
+                if ($requestName = $this->ask('The name of the request for the given controller', $default)) {
+                    return explode(',', $requestName);
+                }
+                return $request($default);
+            };
+
+            $this->parameters['--request'] = $request('Backend/RoleCreateRequest,Backend/RoleUpdateRequest');
+        }
+
+        return $this;
+    }
+
+    protected function buildRepository()
+    {
         if ($this->confirm("Do you want to generate a repository for given controller", true)) {
 
-            $repository = function () use (&$repository) {
-                if ($repositoryName = $this->ask('The name of the repository for the given controller')) {
+            $repository = function($default = null) use (&$repository) {
+                if ($repositoryName = $this->ask('The name of the repository for the given controller', $default)) {
                     return $repositoryName;
                 }
-                return $repository();
+                return $repository($default);
             };
 
-            $arguments['--repository'] = $repository();
+            $this->parameters['--repository'] = $repository('Backend/RoleRepository');
         }
 
+        return $this;
+    }
+
+    protected function buildModel()
+    {
         if ($this->confirm("Do you want to generate a model for given controller", true)) {
 
-            $model = function () use (&$model) {
-                if ($modelName = $this->ask('The name of the model for the given controller')) {
+            $model = function($default = null) use (&$model) {
+                if ($modelName = $this->ask('The name of the model for the given controller', $default)) {
                     return $modelName;
                 }
-                return $model();
+                return $model($default);
             };
 
-            $arguments['--model'] = $model();
+            $this->parameters['--model'] = $model('Role');
         }
 
-        $this->call('generator:controller', $arguments);
+        return $this;
     }
 }

@@ -15,7 +15,7 @@ php artisan vendor:publish --tag=artisan-generator-config
 ````
 php artisan vendor:publish --tag=artisan-generator-views
 ````
-发布迁移文件
+发布配置及模板文件
 ````
 php artisan vendor:publish --provider="Jundayw\LaravelArtisanGenerator\GeneratorServiceProvider"
 ````
@@ -27,7 +27,6 @@ php artisan vendor:publish --provider="Jundayw\LaravelArtisanGenerator\Generator
 ````
 php artisan generator
 ````
-因Laravel内核原因，不支持--request及--view参数
 
 ### 生成模型命令：generator:model
 ````

@@ -36,10 +36,10 @@ class GeneratorRequestCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        $stub = view('artisan-generator::request')->getPath();
+        $stub = view('artisan-generator-stubs::request')->getPath();
 
         if ($this->option('parent')) {
-            $stub = view('artisan-generator::request-nested')->getPath();
+            $stub = view('artisan-generator-stubs::request-nested')->getPath();
         }
 
         return $stub;
