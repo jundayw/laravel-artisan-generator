@@ -38,9 +38,8 @@ class GeneratorViewCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        $stub = sprintf('%s::%s', 'artisan-generator-views', $this->stub);
-        $stub = view($stub)->getPath();
-        return $stub;
+        $stub = sprintf('%s::%s', $this->laravel['config']->get('generator.publishes.views'), $this->stub);
+        return view($stub)->getPath();
     }
 
     /**
@@ -63,7 +62,7 @@ class GeneratorViewCommand extends GeneratorCommand
     public function handle()
     {
         if (!$this->option('view')) {
-            $view = function () use (&$view) {
+            $view = function() use (&$view) {
                 if ($viewName = $this->ask('View name for the given view resources')) {
                     return $viewName;
                 }
@@ -133,8 +132,7 @@ class GeneratorViewCommand extends GeneratorCommand
     protected function getPath($name)
     {
         $name = str_replace('\\', '/', $name);
-        $path = sprintf('%s/%s/%s%s', $this->laravel['path.base'], strtolower($name), $this->stub, '.blade.php');
-        return $path;
+        return sprintf('%s/%s/%s%s', $this->laravel['path.base'], strtolower($name), $this->stub, '.blade.php');
     }
 
     /**

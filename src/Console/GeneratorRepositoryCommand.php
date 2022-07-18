@@ -30,6 +30,12 @@ class GeneratorRepositoryCommand extends GeneratorCommand
      */
     protected $type = 'Repository';
 
+    private function loadViewsFromStubs($name): string
+    {
+        $view = sprintf('%s::%s', $this->laravel['config']->get('generator.publishes.stubs'), $name);
+        return view($view)->getPath();
+    }
+
     /**
      * Get the stub file for the generator.
      *
@@ -37,18 +43,18 @@ class GeneratorRepositoryCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        $stub = view('artisan-generator-stubs::repository')->getPath();
+        $stub = $this->loadViewsFromStubs('repository');
 
         if ($this->option('parent')) {
-            $stub = view('artisan-generator-stubs::repository-nested')->getPath();
+            $stub = $this->loadViewsFromStubs('repository-nested');
         }
 
         if ($this->option('model')) {
-            $stub = view('artisan-generator-stubs::repository-model')->getPath();
+            $stub = $this->loadViewsFromStubs('repository-model');
         }
 
         if ($this->option('model') && $this->option('method')) {
-            $stub = view('artisan-generator-stubs::repository-model-method')->getPath();
+            $stub = $this->loadViewsFromStubs('repository-model-method');
         }
 
         return $stub;

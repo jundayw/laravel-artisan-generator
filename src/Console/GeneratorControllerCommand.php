@@ -30,6 +30,12 @@ class GeneratorControllerCommand extends GeneratorCommand
      */
     protected $type = 'Controller';
 
+    private function loadViewsFromStubs($name): string
+    {
+        $view = sprintf('%s::%s', $this->laravel['config']->get('generator.publishes.stubs'), $name);
+        return view($view)->getPath();
+    }
+
     /**
      * Get the stub file for the generator.
      *
@@ -37,22 +43,22 @@ class GeneratorControllerCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        $stub = view('artisan-generator-stubs::controller')->getPath();
+        $stub = $this->loadViewsFromStubs('controller');
 
         if ($this->option('parent')) {
-            $stub = view('artisan-generator-stubs::controller-nested')->getPath();
+            $stub = $this->loadViewsFromStubs('controller-nested');
         }
 
         if ($this->option('repository')) {
-            $stub = view('artisan-generator-stubs::controller-repository')->getPath();
+            $stub = $this->loadViewsFromStubs('controller-repository');
         }
 
         if ($this->option('repository') && $this->option('method')) {
-            $stub = view('artisan-generator-stubs::controller-repository-method')->getPath();
+            $stub = $this->loadViewsFromStubs('controller-repository-method');
         }
 
         if ($this->option('repository') && $this->option('method') && $this->option('request')) {
-            $stub = view('artisan-generator-stubs::controller-repository-method-request')->getPath();
+            $stub = $this->loadViewsFromStubs('controller-repository-method-request');
         }
 
         return $stub;
@@ -80,7 +86,7 @@ class GeneratorControllerCommand extends GeneratorCommand
     public function handle()
     {
         if (!$this->option('label')) {
-            $label = function () use (&$label) {
+            $label = function() use (&$label) {
                 if ($labelName = $this->ask('The label for the given controller', 'Label')) {
                     return $labelName;
                 }

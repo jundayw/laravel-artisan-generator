@@ -43,6 +43,23 @@ class GeneratorCommand extends Command
             ->buildModel();
 
         $this->call('generator:controller', $this->parameters);
+        // $this->call('generator:controller', [
+        //         "name" => "Backend2/ManagerController",
+        //         "--view" => [
+        //             "create",
+        //             "edit",
+        //             "list",
+        //         ],
+        //         "--request" => [
+        //             "Backend2/ManagerCreateRequest",
+        //             "Backend2/ManagerUpdateRequest",
+        //         ],
+        //         "--repository" => "Backend2/ManagerRepository",
+        //         "--model" => "Manager2",
+        //         "--method" => true,
+        //         "--label" => "Manager",
+        //     ]
+        // );
     }
 
     protected function buildController()
@@ -54,7 +71,7 @@ class GeneratorCommand extends Command
             return $label($default);
         };
 
-        $this->parameters['--label'] = $label('Role');
+        $this->parameters['--label'] = $label($this->laravel['config']->get('generator.default.label'));
 
         $controller = function($default = null) use (&$controller) {
             if ($controllerName = $this->ask('The name of the controller', $default)) {
@@ -63,7 +80,7 @@ class GeneratorCommand extends Command
             return $controller($default);
         };
 
-        $this->parameters['name'] = $controller('Backend/RoleController');
+        $this->parameters['name'] = $controller($this->laravel['config']->get('generator.default.controller'));
 
         return $this;
     }
@@ -81,7 +98,7 @@ class GeneratorCommand extends Command
                 return $view($default);
             };
 
-            $this->parameters['--view'] = $view('create,edit,list');
+            $this->parameters['--view'] = $view($this->laravel['config']->get('generator.default.view'));
         }
 
         return $this;
@@ -98,7 +115,7 @@ class GeneratorCommand extends Command
                 return $request($default);
             };
 
-            $this->parameters['--request'] = $request('Backend/RoleCreateRequest,Backend/RoleUpdateRequest');
+            $this->parameters['--request'] = $request($this->laravel['config']->get('generator.default.request'));
         }
 
         return $this;
@@ -115,7 +132,7 @@ class GeneratorCommand extends Command
                 return $repository($default);
             };
 
-            $this->parameters['--repository'] = $repository('Backend/RoleRepository');
+            $this->parameters['--repository'] = $repository($this->laravel['config']->get('generator.default.repository'));
         }
 
         return $this;
@@ -132,7 +149,7 @@ class GeneratorCommand extends Command
                 return $model($default);
             };
 
-            $this->parameters['--model'] = $model('Role');
+            $this->parameters['--model'] = $model($this->laravel['config']->get('generator.default.model'));
         }
 
         return $this;

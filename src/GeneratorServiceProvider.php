@@ -44,16 +44,17 @@ class GeneratorServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/generator.php', 'generator');
-        $this->loadViewsFrom(__DIR__ . '/../resources/stubs', 'artisan-generator-stubs');
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'artisan-generator-views');
+        $this->loadViewsFrom(__DIR__ . '/../resources/stubs', config('generator.publishes.stubs'));
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', config('generator.publishes.views'));
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/generator.php' => config_path('generator.php'),
             ], 'artisan-generator-config');
+
             $this->publishes([
-                __DIR__ . '/../resources/stubs' => config('generator.resource.stubs'),
-                __DIR__ . '/../resources/views' => config('generator.resource.views'),
+                __DIR__ . '/../resources/stubs' => resource_path(sprintf("views/vendor/%s", config('generator.publishes.stubs'))),
+                __DIR__ . '/../resources/views' => resource_path(sprintf("views/vendor/%s", config('generator.publishes.views'))),
             ], 'artisan-generator-views');
         }
     }

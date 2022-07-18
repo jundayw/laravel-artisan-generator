@@ -29,6 +29,12 @@ class GeneratorModelCommand extends GeneratorCommand
      */
     protected $type = 'Model';
 
+    private function loadViewsFromStubs($name): string
+    {
+        $view = sprintf('%s::%s', $this->laravel['config']->get('generator.publishes.stubs'), $name);
+        return view($view)->getPath();
+    }
+
     /**
      * Get the stub file for the generator.
      *
@@ -36,10 +42,10 @@ class GeneratorModelCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        $stub = view('artisan-generator-stubs::model')->getPath();
+        $stub = $this->loadViewsFromStubs('model');
 
         if ($this->option('parent')) {
-            $stub = view('artisan-generator-stubs::model-nested')->getPath();
+            $stub = $this->loadViewsFromStubs('model-nested');
         }
 
         return $stub;
