@@ -50,7 +50,7 @@ class GeneratorViewCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . $this->laravel['config']->get('generator.view');
+        return $rootNamespace . '\\' . implode('\\', array_slice(explode('\\', $this->laravel['config']->get('generator.view')), 1));
     }
 
     /**

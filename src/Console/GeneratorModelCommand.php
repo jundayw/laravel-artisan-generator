@@ -59,7 +59,7 @@ class GeneratorModelCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . $this->laravel['config']->get('generator.model');
+        return $rootNamespace . '\\' . implode('\\', array_slice(explode('\\', $this->laravel['config']->get('generator.model')), 1));
     }
 
     /**

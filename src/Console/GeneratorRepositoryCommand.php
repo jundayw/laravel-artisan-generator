@@ -70,7 +70,7 @@ class GeneratorRepositoryCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . $this->defaultNamespace;
+        return $rootNamespace . '\\' . implode('\\', array_slice(explode('\\', $this->defaultNamespace), 1));
     }
 
     /**

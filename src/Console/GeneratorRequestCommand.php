@@ -59,7 +59,7 @@ class GeneratorRequestCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . $this->laravel['config']->get('generator.request');
+        return $rootNamespace . '\\' . implode('\\', array_slice(explode('\\', $this->laravel['config']->get('generator.request')), 1));
     }
 
     /**

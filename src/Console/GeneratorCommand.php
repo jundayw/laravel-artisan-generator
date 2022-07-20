@@ -43,23 +43,6 @@ class GeneratorCommand extends Command
             ->buildModel();
 
         $this->call('generator:controller', $this->parameters);
-        // $this->call('generator:controller', [
-        //         "name" => "Backend2/ManagerController",
-        //         "--view" => [
-        //             "create",
-        //             "edit",
-        //             "list",
-        //         ],
-        //         "--request" => [
-        //             "Backend2/ManagerCreateRequest",
-        //             "Backend2/ManagerUpdateRequest",
-        //         ],
-        //         "--repository" => "Backend2/ManagerRepository",
-        //         "--model" => "Manager2",
-        //         "--method" => true,
-        //         "--label" => "Manager",
-        //     ]
-        // );
     }
 
     protected function buildController()
